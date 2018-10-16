@@ -10,6 +10,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import rx.Observable;
 
 /**
  * Created by Chike on 12/3/2016.
@@ -19,21 +20,21 @@ public interface APIService {
 
     @POST("/posts")
     @FormUrlEncoded
-    Call<Post> savePost(@Field("title") String title,
-                        @Field("body") String body,
-                        @Field("userId") long userId);
+    Observable<Post> savePost(@Field("title") String title,
+                              @Field("body") String body,
+                              @Field("userId") long userId);
 
     @POST("/posts")
-    Call<Post> savePost(@Body Post post);
+    Observable<Post> savePost(@Body Post post);
 
     @PUT("/posts/{id}")
     @FormUrlEncoded
-    Call<Post> updatePost(@Path("id") long id,
+    Observable<Post> updatePost(@Path("id") long id,
                           @Field("title") String title,
                           @Field("body") String body,
                           @Field("userId") long userId);
 
     @DELETE("/posts/{id}")
-    Call<Post> deletePost(@Path("id") long id);
+    Observable<Post> deletePost(@Path("id") long id);
 
 }
