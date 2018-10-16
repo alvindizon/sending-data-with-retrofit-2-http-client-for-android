@@ -2,6 +2,7 @@ package com.chikeandroid.retrofittutorial2.data.remote;
 
 import retrofit2.Retrofit;
 
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 
 /**
@@ -16,6 +17,7 @@ public class RetrofitClient {
         if (retrofit==null) {
             retrofit = new Retrofit.Builder()
                     .baseUrl(baseUrl)
+                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     .addConverterFactory(MoshiConverterFactory.create())
                     .build();
         }
