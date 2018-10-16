@@ -14,9 +14,9 @@ import com.chikeandroid.retrofittutorial2.data.model.Post;
 import com.chikeandroid.retrofittutorial2.data.remote.APIService;
 import com.chikeandroid.retrofittutorial2.data.remote.ApiUtils;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -54,72 +54,79 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sendPost(String title, String body) {
-        mAPIService.savePost(title, body, 1).enqueue(new Callback<Post>() {
-            @Override
-            public void onResponse(Call<Post> call, Response<Post> response) {
+        mAPIService.savePost(title, body, 1)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Post>() {
+                    @Override
+                    public void onCompleted() {
 
-                if(response.isSuccessful()) {
-                    showResponse(response.body().toString());
-                    Log.i(TAG, "post submitted to API." + response.body().toString());
-                }
+                    }
 
-            }
+                    @Override
+                    public void onError(Throwable e) {
+                        showErrorMessage();
+                        Log.e(TAG, "Unable to post submit to API.");
+                    }
 
-            @Override
-            public void onFailure(Call<Post> call, Throwable t) {
-
-                showErrorMessage();
-                Log.e(TAG, "Unable to submit post to API.");
-            }
-        });
+                    @Override
+                    public void onNext(Post post) {
+                        showResponse(post.toString());
+                        Log.i(TAG, "post submitted to API." + post.toString());
+                    }
+                });
     }
 
     public void updatePost(long id, String title, String body) {
-        mAPIService.updatePost(id, title, body, 1).enqueue(new Callback<Post>() {
-            @Override
-            public void onResponse(Call<Post> call, Response<Post> response) {
+        mAPIService.updatePost(id, title, body, 1)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Post>() {
+                    @Override
+                    public void onCompleted() {
 
-                if(response.isSuccessful()) {
-                    showResponse(response.body().toString());
-                    Log.i(TAG, "post updated." + response.body().toString());
-                }
-            }
-            @Override
-            public void onFailure(Call<Post> call, Throwable t) {
+                    }
 
-                showErrorMessage();
-                Log.e(TAG, "Unable to update post.");
-            }
-        });
+                    @Override
+                    public void onError(Throwable e) {
+                        showErrorMessage();
+                        Log.e(TAG, "Unable to update post.");
+                    }
+
+                    @Override
+                    public void onNext(Post post) {
+                        showResponse(post.toString());
+                        Log.i(TAG, "post updated." + post.toString());
+                    }
+                });
     }
-
-    public void cancelRequest() {
-        Call<Post> call = mAPIService.savePost("Foo", "Bar", 1);
-        call.enqueue(new Callback<Post>() {
+ /*
+   Example of cancelling a request
+   private Call<Post> mCall;
+    public sendPost(String title, String body) {
+        mCall = mAPIService.savePost(title, body, 1);
+        mCall.enqueue(new Callback<Post>() {
             @Override
             public void onResponse(Call<Post> call, Response<Post> response) {
-
                 if(response.isSuccessful()) {
                     showResponse(response.body().toString());
                     Log.i(TAG, "post submitted to API." + response.body().toString());
                 }
             }
-
             @Override
             public void onFailure(Call<Post> call, Throwable t) {
-
                 if(call.isCanceled()) {
                     Log.e(TAG, "request was aborted");
                 }else {
                     Log.e(TAG, "Unable to submit post to API.");
                 }
                 showErrorMessage();
-
             }
         });
-
-        call.cancel();
     }
+    public void cancelRequest() {
+        mCall.cancel();
+    }*/
 
     public void showResponse(String response) {
         if(mResponseTv.getVisibility() == View.GONE) {
