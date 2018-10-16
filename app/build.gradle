@@ -33,4 +33,8 @@ dependencies {
     // JSON Parsing
     implementation 'com.squareup.moshi:moshi:1.7.0'
     implementation "com.squareup.retrofit2:converter-moshi:2.4.0"
+
+    implementation 'io.reactivex:rxjava:1.3.0'
+    implementation 'io.reactivex:rxandroid:1.2.1'
+    implementation 'com.squareup.retrofit2:adapter-rxjava:2.4.0'
 }
