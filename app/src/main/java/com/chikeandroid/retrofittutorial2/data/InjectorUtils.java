@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.chikeandroid.retrofittutorial2.data.remote.NetworkDataSource;
+import com.chikeandroid.retrofittutorial2.data.ui.SendPostViewModelFactory;
 
 public class InjectorUtils {
 
@@ -18,7 +19,13 @@ public class InjectorUtils {
 
     public static NetworkDataSource provideNetworkDataSource(Context context) {
         Log.d(TAG, "Creating NetworkDataSource...");
-        return new NetworkDataSource(context.getApplicationContext());
+        return NetworkDataSource.getInstance(context.getApplicationContext());
+    }
+
+    public static SendPostViewModelFactory provideSendPostViewModelFactory(Context context) {
+        AppRepository repository = provideRepository(context.getApplicationContext());
+        Log.d(TAG, "Creating SendPostViewModelFactory...");
+        return new SendPostViewModelFactory(repository);
     }
 
 
