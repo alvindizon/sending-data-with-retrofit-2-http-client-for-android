@@ -41,7 +41,7 @@ public class NetworkDataSource {
         return sInstance;
     }
 
-    public LiveData<TxnStatus> sendPost(String title, String body) {
+    public MutableLiveData<TxnStatus> sendPost(String title, String body) {
         mService.savePost(title, body, 1)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
