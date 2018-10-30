@@ -1,7 +1,9 @@
 package com.chikeandroid.retrofittutorial2.data;
+import android.arch.lifecycle.LiveData;
 import android.util.Log;
 
 import com.chikeandroid.retrofittutorial2.data.remote.NetworkDataSource;
+import com.chikeandroid.retrofittutorial2.data.remote.TxnStatus;
 
 
 /**
@@ -30,6 +32,11 @@ public class AppRepository {
             }
         }
         return sInstance;
+    }
+
+    public LiveData<TxnStatus> sendPost(String username, String password) {
+
+        return mNetworkDataSource.sendPost(username, password);
     }
 
 
