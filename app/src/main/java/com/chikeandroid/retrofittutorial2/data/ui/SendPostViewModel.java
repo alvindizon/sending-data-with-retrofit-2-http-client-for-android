@@ -5,12 +5,13 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
 import com.chikeandroid.retrofittutorial2.data.AppRepository;
+import com.chikeandroid.retrofittutorial2.data.model.Post;
 import com.chikeandroid.retrofittutorial2.data.remote.TxnStatus;
 
 public class SendPostViewModel extends ViewModel {
 
     private final AppRepository mRepository;
-    private MutableLiveData<TxnStatus> mStatus;
+//    private MutableLiveData<Post> mPostResponse;
 
     public SendPostViewModel(AppRepository mRepository) {
         this.mRepository = mRepository;
@@ -20,8 +21,8 @@ public class SendPostViewModel extends ViewModel {
         mRepository.sendPost(title, body);
     }
 
-    public LiveData<TxnStatus> getTxnStatus() {
-        mStatus = mRepository.getTxnStatus();
-        return mStatus;
+    public LiveData<Post> getPostResponse() {
+//        mPostResponse =
+        return mRepository.getPostResponse();
     }
 }

@@ -26,13 +26,12 @@ public class NetworkDataSource {
     private static final Object LOCK = new Object();
     private static NetworkDataSource sInstance;
     private final Context mContext;
-    private MutableLiveData<TxnStatus> mStatus;
+    private MutableLiveData<Post> mPostResponse;
 
     public NetworkDataSource(Context mContext) {
         this.mContext = mContext;
         mService = getAPIService();
-        mStatus = new MutableLiveData<>();
-        mStatus.setValue(TxnStatus.TXN_NOSTATUS);
+        mPostResponse = new MutableLiveData<>();
     }
 
     public static NetworkDataSource getInstance(Context context) {
@@ -59,20 +58,19 @@ public class NetworkDataSource {
                     @Override
                     public void onError(Throwable e) {
                         Log.e(TAG, "Unable to post submit to API.");
-                        mStatus.setValue(TxnStatus.TXN_FAILED);
                     }
 
                     @Override
                     public void onNext(Post post) {
                         Log.i(TAG, "post submitted to API." + post.toString());
 
-                        mStatus.setValue(TxnStatus.TXN_SUCCESS);
+                        mPostResponse.setValue(post);
                     }
                 });
     }
 
 
-    public MutableLiveData<TxnStatus> getTxnStatus() {
-        return this.mStatus;
+    public MutableLiveData<Post> getPostResponse() {
+        return this.mPostResponse;
     }
 }

@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.chikeandroid.retrofittutorial2.R;
 import com.chikeandroid.retrofittutorial2.data.InjectorUtils;
+import com.chikeandroid.retrofittutorial2.data.model.Post;
 import com.chikeandroid.retrofittutorial2.data.remote.TxnStatus;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,13 +39,11 @@ public class MainActivity extends AppCompatActivity {
                 this.getApplicationContext());
         mViewModel = ViewModelProviders.of(this, factory).get(SendPostViewModel.class);
 
-        mViewModel.getTxnStatus().observe(this, new Observer<TxnStatus>() {
+        mViewModel.getPostResponse().observe(this, new Observer<Post>() {
             @Override
-            public void onChanged(@Nullable TxnStatus txnStatus) {
-                if(txnStatus == TxnStatus.TXN_SUCCESS) {
-                    Toast.makeText(MainActivity.this, "POST success", Toast.LENGTH_SHORT).show();
-                } else if(txnStatus == TxnStatus.TXN_FAILED) {
-                    showErrorMessage();
+            public void onChanged(@Nullable Post post) {
+                if(post != null) {
+                    showResponse(post.toString());
                 }
             }
         });

@@ -3,6 +3,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.util.Log;
 
+import com.chikeandroid.retrofittutorial2.data.model.Post;
 import com.chikeandroid.retrofittutorial2.data.remote.NetworkDataSource;
 import com.chikeandroid.retrofittutorial2.data.remote.TxnStatus;
 
@@ -39,8 +40,8 @@ public class AppRepository {
          mNetworkDataSource.sendPost(username, password);
     }
 
-    public MutableLiveData<TxnStatus> getTxnStatus() {
-        return mNetworkDataSource.getTxnStatus();
+    public MutableLiveData<Post> getPostResponse() {
+        return mNetworkDataSource.getPostResponse();
     }
 
 
