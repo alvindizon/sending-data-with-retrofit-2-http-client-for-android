@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(@Nullable TxnStatus txnStatus) {
                 if(txnStatus == TxnStatus.TXN_SUCCESS) {
                     Toast.makeText(MainActivity.this, "POST success", Toast.LENGTH_SHORT).show();
-                } else {
+                } else if(txnStatus == TxnStatus.TXN_FAILED) {
                     showErrorMessage();
                 }
             }

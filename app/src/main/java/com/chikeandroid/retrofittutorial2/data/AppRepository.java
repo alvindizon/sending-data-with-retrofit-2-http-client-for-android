@@ -35,9 +35,12 @@ public class AppRepository {
         return sInstance;
     }
 
-    public MutableLiveData<TxnStatus> sendPost(String username, String password) {
+    public void sendPost(String username, String password) {
+         mNetworkDataSource.sendPost(username, password);
+    }
 
-        return mNetworkDataSource.sendPost(username, password);
+    public MutableLiveData<TxnStatus> getTxnStatus() {
+        return mNetworkDataSource.getTxnStatus();
     }
 
 

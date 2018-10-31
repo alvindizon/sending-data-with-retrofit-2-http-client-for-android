@@ -14,14 +14,14 @@ public class SendPostViewModel extends ViewModel {
 
     public SendPostViewModel(AppRepository mRepository) {
         this.mRepository = mRepository;
-        this.mStatus = new MutableLiveData<>();
     }
 
     public void sendPost(String title, String body) {
-        mStatus = mRepository.sendPost(title, body);
+        mRepository.sendPost(title, body);
     }
 
     public LiveData<TxnStatus> getTxnStatus() {
-        return this.mStatus;
+        mStatus = mRepository.getTxnStatus();
+        return mStatus;
     }
 }

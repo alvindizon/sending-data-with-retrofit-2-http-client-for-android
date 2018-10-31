@@ -7,6 +7,9 @@ import android.util.Log;
 
 import com.chikeandroid.retrofittutorial2.data.model.Post;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -28,6 +31,8 @@ public class NetworkDataSource {
     public NetworkDataSource(Context mContext) {
         this.mContext = mContext;
         mService = getAPIService();
+        mStatus = new MutableLiveData<>();
+        mStatus.setValue(TxnStatus.TXN_NOSTATUS);
     }
 
     public static NetworkDataSource getInstance(Context context) {
@@ -41,7 +46,7 @@ public class NetworkDataSource {
         return sInstance;
     }
 
-    public MutableLiveData<TxnStatus> sendPost(String title, String body) {
+    public void sendPost(String title, String body) {
         mService.savePost(title, body, 1)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -60,10 +65,14 @@ public class NetworkDataSource {
                     @Override
                     public void onNext(Post post) {
                         Log.i(TAG, "post submitted to API." + post.toString());
+
                         mStatus.setValue(TxnStatus.TXN_SUCCESS);
                     }
                 });
+    }
 
-        return mStatus;
+
+    public MutableLiveData<TxnStatus> getTxnStatus() {
+        return this.mStatus;
     }
 }
